@@ -75,6 +75,22 @@ if (!fuente1) {//Analizo si se crea correctamente
         return -1;
     }
 
+    if (!fuente2) {//Analizo si se crea correctamente
+        fprintf(stderr, "Error al cargar la fuente!\n");
+        al_destroy_display(pantalla);
+        return -1;
+    }
+    if (!fuente3) {//Analizo si se crea correctamente
+        fprintf(stderr, "Error al cargar la fuente!\n");
+        al_destroy_display(pantalla);
+        return -1;
+    }
+    if (!fuente4) {//Analizo si se crea correctamente
+        fprintf(stderr, "Error al cargar la fuente!\n");
+        al_destroy_display(pantalla);
+        return -1;
+    }
+
 al_clear_to_color(al_map_rgb(0, 0, 0)); // Limpia la pantalla con negro
 
 // Dibuja líneas rojas en la pantalla

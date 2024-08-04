@@ -1,35 +1,41 @@
 /* INCLUDES */
 #include <stdio.h>  // Incluyo la librería estándar stdio
 #include "allegro.h" // Incluyo el archivo de cabecera de Allegro
+#include <unistd.h> // Para la función sleep
+#include "logica.h"
 
 /* FUNCION MAIN */
 int main(void) {
-    printf("Hola");
-    AllegroResources resources = init_allegro();
-
-    draw_text(resources, 0, "Texto con fuente 1", 400, 300); // Muestra el texto con la primera fuente
-    al_rest(3); // Pausa para ver el resultado
-    draw_text(resources, 2, "Texto con fuente 2", 400, 300);
-    al_rest(3); // Pausa para ver el resultado
-    cleanup_allegro(resources);
-
-    return 0;
+    for (int i = 0; i < 40; i++) {
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    desplazar_fila_izq(1, 1);
+    desplazar_fila_der(3, 1);
+    desplazar_fila_izq(5, 1);
+    desplazar_fila_der(7, 1);
+    desplazar_fila_izq(9, 1);
+    desplazar_fila_der(11, 1);
     
-    /*char word[] = "palabra";
-    int var = 250;
-    printf("%d \n", var);
-    printf("%d\n", (int)strlen(word));
-
-    pthread_t thread_id; 
-    // Crear el hilo
-    if (pthread_create(&thread_id, NULL, allegro, NULL)) {
-        fprintf(stderr, "Error al crear el hilo.\n"); //Analizo si se crea correctamente
-        return -1;
+    imprimir_matriz( FILAS, COLUMNAS, 1);
+    imprimir_matriz( FILAS, COLUMNAS, 3);
+    imprimir_matriz( FILAS, COLUMNAS, 5);
+    imprimir_matriz( FILAS, COLUMNAS, 7);
+    imprimir_matriz( FILAS, COLUMNAS, 9);
+    imprimir_matriz( FILAS, COLUMNAS, 11);
+    usleep(500000); 
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    desplazar_fila_izq(1, 1);
+    desplazar_fila_der(3, 1);
+    desplazar_fila_izq(5, 1);
+    desplazar_fila_der(7, 1);
+    desplazar_fila_izq(9, 1);
+    desplazar_fila_der(11, 1);
+    imprimir_matriz( FILAS, COLUMNAS, 1);
+    imprimir_matriz( FILAS, COLUMNAS, 3);
+    imprimir_matriz( FILAS, COLUMNAS, 5);
+    imprimir_matriz( FILAS, COLUMNAS, 7);
+    imprimir_matriz( FILAS, COLUMNAS, 9);
+    imprimir_matriz( FILAS, COLUMNAS, 11);
+    usleep(500000);
     }
-
-    // Esperar a que el hilo termine
-    if (pthread_join(thread_id, NULL)) {
-        fprintf(stderr, "Error al esperar al hilo.\n"); //Analizo que el hilo termine correctamente
-        return -1;
-    } */
+    return 0;
 }

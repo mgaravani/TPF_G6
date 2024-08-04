@@ -44,10 +44,10 @@ AllegroResources init_allegro() {
     }
 
     // Cargar las fuentes en el array
-    resources.fuentes[0] = al_load_font("../resources/Bing Bam Boum.ttf", 36, ALLEGRO_ALIGN_CENTER); // Fuente 1
-    resources.fuentes[1] = al_load_font("../resources/Chubby Relief.ttf", 36, ALLEGRO_ALIGN_CENTER); // Fuente 2
-    resources.fuentes[2] = al_load_font("../resources/Copyduck.ttf", 36, ALLEGRO_ALIGN_CENTER); // Fuente 3
-    resources.fuentes[3] = al_load_font("../resources/Fluo Gums.ttf", 36, ALLEGRO_ALIGN_CENTER); // Fuente 4
+    resources.fuentes[0] = al_load_font("resources/Bing Bam Boum.ttf", 36, ALLEGRO_ALIGN_CENTER); // Fuente 1
+    resources.fuentes[1] = al_load_font("resources/Chubby Relief.ttf", 36, ALLEGRO_ALIGN_CENTER); // Fuente 2
+    resources.fuentes[2] = al_load_font("resources/Copyduck.ttf", 36, ALLEGRO_ALIGN_CENTER); // Fuente 3
+    resources.fuentes[3] = al_load_font("resources/Fluo Gums.ttf", 36, ALLEGRO_ALIGN_CENTER); // Fuente 4
 
     for (int i = 0; i < 4; i++) {
         if (!resources.fuentes[i]) {

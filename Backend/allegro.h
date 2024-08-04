@@ -3,7 +3,6 @@
 
 #include <pthread.h>
 #include <allegro5/allegro_font.h> // Incluyo el addon font
-
 typedef struct {
     ALLEGRO_DISPLAY *display;
     ALLEGRO_FONT *fuentes[4]; // Array para las fuentes

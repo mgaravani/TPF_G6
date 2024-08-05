@@ -44,14 +44,14 @@ AllegroResources init_allegro()
     /*Utilizo la funcion para obtener el modo de visualizacion, el 0 se usa para obtener el primer modo, el segundo 
     parametro es un puntero al tipo de dato ALLEGRO_DISPLAY_MODE, estructura donde se almacenara la informacion*/
     al_get_display_mode(0, &disp_data); 
-    int width = disp_data.width; //Obtengo el ancho del modo de visualizacion y lo guardo en la variable width
-    int height = disp_data.height; //Obtengo el alto del modo de visualizacion y lo guardo en la variable height
+    resources.width = disp_data.width; //Obtengo el ancho del modo de visualizacion y lo guardo en el campo width
+    resources.height = disp_data.height; //Obtengo el alto del modo de visualizacion y lo guardo en el campo height
 
     // Configura el display con el flag ALLEGRO_FULLSCREEN para que la pantalla se cree en modo pantalla completa
     al_set_new_display_flags(ALLEGRO_FULLSCREEN);
 
     /*Creo una pantalla del modo pantalla completa, la guardo en la estructura resources en el campo pantalla*/
-    resources.pantalla = al_create_display(width, height); 
+    resources.pantalla = al_create_display(resources.width, resources.height); 
 
     /*ANALIZA SI SE CREO CORRECTAMENTE*/
     if (!resources.pantalla) {
@@ -88,9 +88,13 @@ AllegroResources init_allegro()
 void menu_allegro(AllegroResources resources, int width,  int height)
 {
     al_clear_to_color(al_map_rgb(0, 0, 0)); // Limpia la pantalla con negro
-    
+    al_draw_text(resources.fuentes[1], al_map_rgb(66, 194, 29), resources.width /2 , resources.height/4,
+    ALLEGRO_ALIGN_CENTRE , "FROGGER"); //Dibuja en pantalla el texto "Frogger"
+    al_flip_display(); //Da vuelta la pantalla para poder observar los cambios
+    al_rest(10);//Tiempo de descanso hasta que se deje de mostrar
 }
 
+/*
 void draw_text(AllegroResources resources, int font_index, const char *text, float x, float y) {
     if (font_index < 0 || font_index >= 4) {
         printf("Índice de fuente inválido!\n");
@@ -111,4 +115,4 @@ void cleanup_allegro(AllegroResources resources) {
     if (resources.pantalla) {
         al_destroy_display(resources.pantalla);
     }
-}
+}*/

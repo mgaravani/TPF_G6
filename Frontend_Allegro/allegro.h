@@ -17,6 +17,9 @@ typedef struct
 {
     ALLEGRO_DISPLAY *pantalla; //Puntero al tipo de dato ALLEGRO_DISPLAY para la pantalla
     ALLEGRO_FONT *fuentes[10]; // Array de punteros al tipo ALLEGRO_FONT para las fuentes a utilizar 
+    int width;
+    int height;
+
 } AllegroResources;
 
 /*PROTOTYPES*/
@@ -27,6 +30,7 @@ AllegroResources init_allegro(); //Encargada de realizar todas las inicializacio
 
 /*FUNCION menu_allegro*/
 //Da inicio al juego mostrando un menu de inicio para seleccionar el modo de juego y dar comienzo a la partida
-void menu_allegro(AllegroResources resources, int width,  int height);
+//Recibe la estructura resources
+void menu_allegro(AllegroResources resources);
 
 #endif /* ALLEGRO_H */

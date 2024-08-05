@@ -21,7 +21,7 @@ int main()
 
         disp_update();	//Actualiza el display con el contenido del buffer
 		coord = joy_read();	//Guarda las coordenadas medidas
-        
+
         if(coord.x > THRESHOLD && npos.x < DISP_MAX_X)
 		{
 			npos.x++;
@@ -42,6 +42,7 @@ int main()
 		disp_write(pos,D_OFF);	//apaga la posición vieja en el buffer
 		disp_write(npos,D_ON);	//enciende la posición nueva en el buffer
 		pos = npos;				//actualiza la posición actual
+        usleep(100);//tiempo de espera para que no sea muy rapido el movimiento
     } while (coord.sw == J_NOPRESS);
     disp_clear();
     disp_update();

@@ -1,6 +1,6 @@
 /* INCLUDES */
 #include <stdio.h>  // Incluyo la librería estándar stdio
-#include "allegro.h" // Incluyo el archivo de cabecera de Allegro
+#include "../Frontend_Allegro/allegro.h" // Incluyo el archivo de cabecera de Allegro
 #include <unistd.h> // Para la función sleep
 #include "logica.h"
 

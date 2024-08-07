@@ -8,33 +8,16 @@
 int main(void) {
     for (int i = 0; i < 40; i++) {
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    desplazar_fila_izq(1, 1);
-    desplazar_fila_der(3, 1);
-    desplazar_fila_izq(5, 1);
-    desplazar_fila_der(7, 1);
-    desplazar_fila_izq(9, 1);
-    desplazar_fila_der(11, 1);
-    
-    imprimir_matriz( FILAS, COLUMNAS, 1);
+    shift_row(2, 0);
+    shift_row(3, 1);
+    imprimir_matriz( FILAS, COLUMNAS, 2);
     imprimir_matriz( FILAS, COLUMNAS, 3);
-    imprimir_matriz( FILAS, COLUMNAS, 5);
-    imprimir_matriz( FILAS, COLUMNAS, 7);
-    imprimir_matriz( FILAS, COLUMNAS, 9);
-    imprimir_matriz( FILAS, COLUMNAS, 11);
     usleep(500000); 
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    desplazar_fila_izq(1, 1);
-    desplazar_fila_der(3, 1);
-    desplazar_fila_izq(5, 1);
-    desplazar_fila_der(7, 1);
-    desplazar_fila_izq(9, 1);
-    desplazar_fila_der(11, 1);
-    imprimir_matriz( FILAS, COLUMNAS, 1);
+    shift_row(2, 0);
+    shift_row(3, 1);
+    imprimir_matriz( FILAS, COLUMNAS, 2);
     imprimir_matriz( FILAS, COLUMNAS, 3);
-    imprimir_matriz( FILAS, COLUMNAS, 5);
-    imprimir_matriz( FILAS, COLUMNAS, 7);
-    imprimir_matriz( FILAS, COLUMNAS, 9);
-    imprimir_matriz( FILAS, COLUMNAS, 11);
     usleep(500000);
     }
     return 0;

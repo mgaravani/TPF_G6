@@ -1,6 +1,8 @@
 /* INCLUDES */
 #include <stdio.h>  // Incluyo la librería estándar stdio HOLA RAMA
 #include <unistd.h> // Para la función sleep 
+#include <stdio.h>  // Incluyo la librería estándar stdio
+#include <unistd.h> // Para la función sleep
 #include "logica.h"
 
 // Macros para definir hasta que columna se shiftea antes de reiniciarse //

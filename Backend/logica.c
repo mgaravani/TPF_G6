@@ -77,5 +77,3 @@ void update_map(int level)
 {
     
 }
-
-

@@ -1,6 +1,6 @@
 /* INCLUDES */
-#include <stdio.h>  // Incluyo la librería estándar stdio
-#include <unistd.h> // Para la función sleep SOY BAUTI
+#include <stdio.h>  // Incluyo la librería estándar stdio HOLA RAMA
+#include <unistd.h> // Para la función sleep 
 #include "logica.h"
 
 int matriz[FILAS][COLUMNAS] = {
@@ -49,9 +49,8 @@ void imprimir_matriz(int filas, int columnas, int fila_index) {
         printf("Índice de fila fuera de rango.\n");
     }
 }
+
 void desplazar_fila_izq(int fila_index, int desplazamientos) {
-
-
     for (int i = 0; i < desplazamientos; i++) {
         for (int j = 0; j < COLUMNAS - 1; j++) {
             matriz[fila_index][j] = matriz[fila_index][j + 1];
@@ -79,7 +78,7 @@ void desplazar_fila_der(int fila_index, int desplazamientos) {
         matriz[fila_index][i] = matriz[fila_index][i - desplazamientos];
     }
 
-        // Si el bit 1 estaba en la posición 10, ponerlo en 0 y pasarlo a la posición 30
+    // Si el bit 1 estaba en la posición 10, ponerlo en 0 y pasarlo a la posición 30
     if (matriz[fila_index][35] == fila_index-(fila_index/2)) {
         matriz[fila_index][35] = 0;  // Poner a 0 el bit en la posición 10
         matriz[fila_index][5] = fila_index-(fila_index/2);  // Poner a 1 el bit en la posición 30

@@ -6,5 +6,6 @@
 void desplazar_fila_izq( int fila_index, int desplazamientos);
 void desplazar_fila_der( int fila_index, int desplazamientos);
 void imprimir_matriz(int filas, int columnas, int fila_index);
+//cambio 
 
 #endif /* ALLEGRO_H */

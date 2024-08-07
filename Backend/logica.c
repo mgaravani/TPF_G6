@@ -1,6 +1,6 @@
 /* INCLUDES */
 #include <stdio.h>  // Incluyo la librería estándar stdio
-#include <unistd.h> // Para la función sleep SOY BAUTI
+#include <unistd.h> // Para la función sleep
 #include "logica.h"
 
 int matriz[FILAS][COLUMNAS] = {

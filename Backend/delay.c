@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #define NIVELES 5
-
+/*DUDA DE FABRI, por que hay dos main???????*/
 int tiempoespera (int nivel, int fila);
 //  falta chequeo de errores
 int main() {

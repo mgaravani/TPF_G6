@@ -2,9 +2,9 @@
 
 /*FUNCION init allegro*/
 //Encargada de realizar todas las inicializaciones necesarias para el funcionamento
-AllegroResources init_allegro() 
+AllegroResources init_allegro(uint32_t matriz[FILAS][COLUMNAS]) 
 {
-    AllegroResources resources = {.mouse_state = {0,0,false,false}}; //Creo la instancia resources del tipo de dato estructura AllegroResources
+    AllegroResources resources = {.selected_option = 1 , .obstaculos = matriz} ; //Creo la instancia resources del tipo de dato estructura AllegroResources
 
     /*CHEQUEO DE INCIALIZACIONES*/
 
@@ -17,12 +17,6 @@ AllegroResources init_allegro()
     /*INICIALIZACION DE SISTEMA DE ENTRADA DE TECLADO*/
     if (!al_install_keyboard()) {
         printf("No se pudo instalar el teclado.\n");
-        exit(EXIT_FAILURE); //Ante un fallo termina el programa y borra los recursos
-    }
-
-    /*INICIALIZACION DE SISTEMA DE ENTRADA DEL MOUSE*/
-    if (!al_install_mouse()) {
-        printf("No se pudo instalar el Mouse.\n");
         exit(EXIT_FAILURE); //Ante un fallo termina el programa y borra los recursos
     }
     
@@ -87,9 +81,35 @@ AllegroResources init_allegro()
         }
     }
 
+/*************************************************************************************************
+* Inicialización del sistema de eventos                                                          *
+* Se crea una cola de eventos que manejará las entradas del sistema,                             *
+* como eventos de teclado y pantalla. Se asocia la pantalla del recurso 'resources.pantalla'     *
+* con la cola de eventos para monitorear eventos relacionados con esa pantalla.          
+*************************************************************************************************/        
+  ALLEGRO_EVENT_QUEUE *event_queue = init_events(resources.pantalla);                             
+
+/*************************************************************************************************
+* Bucle principal del menú                                                                       *
+* El bucle se mantendrá activo hasta que 'done' sea verdadero.                                   *
+* Inicialmente, 'done' está en 'false' para que el menú continúe corriendo.                      *
+*************************************************************************************************/ 
+bool done = false;
+
+while (!done) {
+    // Se llama a la función 'manejo_eventos' que gestiona cualquier evento 
+    // capturado en la cola de eventos. Esto incluye detectar entradas de teclado,
+    // cierres de ventana, etc., y actuar en consecuencia.
+    manejo_eventos(&resources, event_queue);
+    
+    // 'menu_allegro' se llama en cada iteración del bucle para redibujar el menú
+    // en función del estado actual. Dependiendo de la selección del usuario, el menú
+    // se actualizará visualmente, mostrando el rectángulo alrededor de la opción seleccionada.
+    menu_allegro(resources);
+}
 
 
-    return resources; //Devuelve un puntero a la estructura
+    return resources;
 }
 
 void menu_allegro(AllegroResources resources)
@@ -101,94 +121,59 @@ void menu_allegro(AllegroResources resources)
     al_draw_text(resources.fuentes[0], al_map_rgb(66, 194, 29), resources.width / 2, resources.height / 8,
                  ALLEGRO_ALIGN_CENTRE, "FROGGER");
 
-    // Define las coordenadas y tamaño del botón "Play Game"
-    ALLEGRO_RECTANGLE play_button = { resources.width / 2 - 200, (resources.height / 8) * 4,
-                                      resources.width / 2 + 200, (resources.height / 8) * 4 + 65 };
-    // Dibuja el rectángulo rojo para el botón "Play Game"
-    al_draw_filled_rounded_rectangle(play_button.x1, play_button.y1, play_button.x2, play_button.y2, 10, 10, al_map_rgb(100, 0, 0));
-    // Dibuja el texto "Play Game" sobre el rectángulo
-    al_draw_text(resources.fuentes[4], al_map_rgb(66, 194, 29), resources.width / 2, (resources.height / 8) * 4,
-                 ALLEGRO_ALIGN_CENTRE, "Play Game");
-
-    // Define las coordenadas y tamaño del botón "High Scores"
-    ALLEGRO_RECTANGLE high_scores_button = { resources.width / 2 - 220, (resources.height / 8) * 5,
-                                             resources.width / 2 + 220, (resources.height / 8) * 5 + 65 };
-    // Dibuja el rectángulo rojo para el botón "High Scores"
-    al_draw_filled_rounded_rectangle(high_scores_button.x1, high_scores_button.y1, high_scores_button.x2, high_scores_button.y2, 10, 10, al_map_rgb(100, 0, 0));
-    // Dibuja el texto "High Scores" sobre el rectángulo
-    al_draw_text(resources.fuentes[4], al_map_rgb(66, 194, 29), resources.width / 2, (resources.height / 8) * 5,
-                 ALLEGRO_ALIGN_CENTRE, "High Scores");
-
-    // Define las coordenadas y tamaño del botón "Quit Game"
-    ALLEGRO_RECTANGLE quit_button = { resources.width / 2 - 195, (resources.height / 8) * 6,
-                                      resources.width / 2 + 195, (resources.height / 8) * 6 + 65 };
-    // Dibuja el rectángulo rojo para el botón "Quit Game"
-    al_draw_filled_rounded_rectangle(quit_button.x1, quit_button.y1, quit_button.x2, quit_button.y2, 10, 10, al_map_rgb(100, 0, 0));
-    // Dibuja el texto "Quit Game" sobre el rectángulo
-    al_draw_text(resources.fuentes[4], al_map_rgb(66, 194, 29), resources.width / 2, (resources.height / 8) * 6,
-                 ALLEGRO_ALIGN_CENTRE, "Quit Game");
-
-    al_flip_display(); //Da vuelta la pantalla para poder observar los cambios
-
-    /*CLICK ANALISIS*/
-    //Verifico si esta presionado el boton izquierdo
-    if(resources.mouse_state.left_button)
-    {
-        //Verifica si se presiona "Play Game"
-        if(((resources.mouse_state.x >= play_button.x1) && (resources.mouse_state.x <= play_button.x2))
-        &&((resources.mouse_state.y >= play_button.y1) && (resources.mouse_state.y <= play_button.y2)))
-        {
-            inicio_partida(1,resources);
+    // Opciones del menú
+    const char *options[3] = {"Play Game", "High Scores", "Quit Game"};
+    //Coordenadas en Y para los rectangulos
+    int y_positions[3] = {
+        (resources.height / 8) * 4, // Play Game
+        (resources.height / 8) * 5, // High Scores
+        (resources.height / 8) * 6  // Quit Game
+    };
+    //Para ver que opcion esta seleccionada y segun eso pintar la pantalla de determinada forma
+    for (int i = 0; i < 3; i++) {
+        //Me fijo que opcion esta seleccionada
+        if (resources.selected_option == i + 1) {
+            //Obtengo el ancho del texto
+            int text_width = al_get_text_width(resources.fuentes[4], options[i]);
+            //Dibujo un rectangulo de color en funcion del ancho del texto alrededor de el
+            al_draw_rectangle(resources.width / 2 - text_width / 2 - 10, y_positions[i] - 10,
+                              resources.width / 2 + text_width / 2 + 10, y_positions[i] + 65 + 10,
+                              al_map_rgb(255, 255, 255), 3);
         }
-
-        //Verifica si se presiona "High Scores"
-        else if(((resources.mouse_state.x >= high_scores_button.x1) && (resources.mouse_state.x <= high_scores_button.x2))
-        &&((resources.mouse_state.y >= high_scores_button.y1) && (resources.mouse_state.y <= high_scores_button.y2)))
-        {
-            inicio_partida(2,resources);
-        }
-
-        //Verifica si se presiona "Quit Game"
-        else if(((resources.mouse_state.x >= quit_button.x1) && (resources.mouse_state.x <= quit_button.x2))
-        &&((resources.mouse_state.y >= quit_button.y1) && (resources.mouse_state.y <= quit_button.y2)))
-        {
-            inicio_partida(3,resources);
-        }
+        //Escribo el texto con las coordenadas correctas
+        al_draw_text(resources.fuentes[4], al_map_rgb(66, 194, 29), resources.width / 2, y_positions[i],
+                     ALLEGRO_ALIGN_CENTRE, options[i]);
     }
 
-    // Limpia el estado del mouse después de procesar el evento
-    resources.mouse_state.left_button = false;
+    al_flip_display();
+
 }
 
 /*FUNCION inicio_partida*/
 //TESTEO POR EL MOMENTO
-void inicio_partida(int opcion, AllegroResources resources)
-{
-    switch (opcion)
-    {
-    case 1:
+void inicio_partida( AllegroResources resources)
+{   
     // Limpia la pantalla con el color negro
     al_clear_to_color(al_map_rgb(0, 0, 0));
-        al_draw_text(resources.fuentes[4], al_map_rgb(66, 194, 29), resources.width / 2, (resources.height / 8) * 4,
-                 ALLEGRO_ALIGN_CENTRE, "Play Game"); 
-        al_flip_display();
-        al_rest(4);
-        break;
 
-    case 2:
-    // Limpia la pantalla con el color negro
-    al_clear_to_color(al_map_rgb(0, 0, 0));
-        al_draw_text(resources.fuentes[4], al_map_rgb(66, 194, 29), resources.width / 2, (resources.height / 8) * 4,
-                 ALLEGRO_ALIGN_CENTRE, "High Scores"); 
-        al_flip_display();
-        al_rest(4);
-        break;
+    uint32_t cell_width = resources.width / COLUMNAS; //Defino el ancho de las celdas de la matriz
+    uint32_t cell_height = resources.height / FILAS; //Defino el alto de las celdas de la matriz
 
-    case 3:
-            // Salir del programa
-            exit(EXIT_SUCCESS);
-        break;
+    //Bucle para recorrer celda a celda
+    for (uint32_t i = 0; i < FILAS; i++) {
+        for (uint32_t j = 0; j < COLUMNAS; j++) {
+            if (resources.obstaculos[i][j] == 1) {//Si hay un 1
+                // Dibuja un círculo en la posición correcta
+                int x = j * cell_width + cell_width / 2; //Defino la coordenada x del centro
+                int y = i * cell_height + cell_height / 2; //Defino la coordenada y del centro
+                int radius = (cell_width < cell_height ? cell_width : cell_height) / 3; //Defino el radio 
+                al_draw_filled_circle(x, y, radius, al_map_rgb(255, 255, 255)); //Dibujo el circulo
+            }
+        }
     }
+
+    al_flip_display();
+    al_rest(3);
 
 }
 

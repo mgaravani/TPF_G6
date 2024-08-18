@@ -53,8 +53,7 @@ void cleanup_allegro(AllegroResources resources);
 
 /*FUNCION inicio_partida*/
 //Utilizada para imprimir en pantalla el mapa de juego
-void inicio_partida( AllegroResources resources);
-
+void inicio_partida( uint32_t matriz[FILAS][COLUMNAS]);
 
 /*FUNCION events*/
 //Creacion de eventos

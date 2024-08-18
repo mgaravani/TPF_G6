@@ -1,4 +1,5 @@
 #include "allegro.h" //Incluyo el Header allegro
+#include <stdio.h>
 
 /*FUNCION init allegro*/
 //Encargada de realizar todas las inicializaciones necesarias para el funcionamento
@@ -45,7 +46,8 @@ AllegroResources init_allegro(uint32_t matriz[FILAS][COLUMNAS])
     al_get_display_mode(0, &disp_data); 
     resources.width = disp_data.width; //Obtengo el ancho del modo de visualizacion y lo guardo en el campo width
     resources.height = disp_data.height; //Obtengo el alto del modo de visualizacion y lo guardo en el campo height
-
+    printf("Height %d", resources.height);
+    printf("WIDTH %d", resources.width);
     // Configura el display con el flag ALLEGRO_FULLSCREEN para que la pantalla se cree en modo pantalla completa
     al_set_new_display_flags(ALLEGRO_FULLSCREEN);
 
@@ -94,8 +96,8 @@ AllegroResources init_allegro(uint32_t matriz[FILAS][COLUMNAS])
 * El bucle se mantendrá activo hasta que 'done' sea verdadero.                                   *
 * Inicialmente, 'done' está en 'false' para que el menú continúe corriendo.                      *
 *************************************************************************************************/ 
-bool done = false;
-
+bool done = true;
+//inicio_partida(resources);
 while (!done) {
     // Se llama a la función 'manejo_eventos' que gestiona cualquier evento 
     // capturado en la cola de eventos. Esto incluye detectar entradas de teclado,
@@ -105,7 +107,7 @@ while (!done) {
     // 'menu_allegro' se llama en cada iteración del bucle para redibujar el menú
     // en función del estado actual. Dependiendo de la selección del usuario, el menú
     // se actualizará visualmente, mostrando el rectángulo alrededor de la opción seleccionada.
-    menu_allegro(resources);
+   // menu_allegro(resources);
 }
 
 
@@ -148,21 +150,20 @@ void menu_allegro(AllegroResources resources)
     al_flip_display();
 
 }
-
 /*FUNCION inicio_partida*/
 //TESTEO POR EL MOMENTO
-void inicio_partida( AllegroResources resources)
+void inicio_partida( uint32_t matriz[FILAS][COLUMNAS])
 {   
     // Limpia la pantalla con el color negro
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
-    uint32_t cell_width = resources.width / COLUMNAS; //Defino el ancho de las celdas de la matriz
-    uint32_t cell_height = resources.height / FILAS; //Defino el alto de las celdas de la matriz
+    uint32_t cell_width = 1920 / COLUMNAS; //Defino el ancho de las celdas de la matriz
+    uint32_t cell_height = 1080 / FILAS; //Defino el alto de las celdas de la matriz
 
-    //Bucle para recorrer celda a celda
+     // Bucle para recorrer celda a celda
     for (uint32_t i = 0; i < FILAS; i++) {
         for (uint32_t j = 0; j < COLUMNAS; j++) {
-            if (resources.obstaculos[i][j] == 1) {//Si hay un 1
+            if (matriz[i][j] != 0) { //Si hay un 1
                 // Dibuja un círculo en la posición correcta
                 int x = j * cell_width + cell_width / 2; //Defino la coordenada x del centro
                 int y = i * cell_height + cell_height / 2; //Defino la coordenada y del centro
@@ -173,8 +174,6 @@ void inicio_partida( AllegroResources resources)
     }
 
     al_flip_display();
-    al_rest(3);
-
 }
 
 /*FUNCION cleanup_allegro*/

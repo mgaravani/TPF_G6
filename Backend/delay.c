@@ -1,50 +1,34 @@
-#include <stdio.h>
 #include <time.h>
+
 #define NIVELES 5
-/*DUDA DE FABRI, por que hay dos main???????*/
-int tiempoespera (int nivel, int fila);
-//  falta chequeo de errores
-int main() {
-    int nivel = 1;
-    int fila = 1;
+#define FILA 14
 
-    // Ejemplo de uso
-    while (1)
-    {
-        if (tiempoespera(nivel, fila)) {
-        printf("Tiempo transcurrido suficiente.\n");
-        } 
-        //else {
-        //    printf("Tiempo insuficiente.\n");
-        //}
-    }
-    return 0;
-}
-
-
-int tiempoespera (int nivel, int fila){
-    static clock_t flags[NIVELES];  //Guardo por nivel el tiempo de inicio.
-    clock_t tiempo_actual;
+int tiempoespera(int nivel, int fila) {
+    static clock_t flags[FILA] = {0};  // Inicializa el arreglo a 0
     double tiempo_transcurrido;
-    double vel;
+    double vel = 1.0;
 
-    if (fila <= 5 && fila >= 1){
-        vel = 1;
-    }
-    else if (fila >= 7 && fila <= 11){
+    // Configuración de velocidad basada en la fila
+    if (fila >= 1 && fila <= 5) {
+        vel = 1.0;
+    } else if (fila >= 6 && fila <= 14) {
         vel = 1.25;
+    } else {
+        vel = 1.0;  // Valor predeterminado si la fila no está en los rangos definidos
     }
 
-    if (flags[nivel] == 0){ //Inicio el tiempo la 1ra vez que se entra con un nivel
-        flags[nivel] = clock();
+    // Inicializa el temporizador para la fila específica si es la primera vez
+    if (flags[fila] == 0) {
+        flags[fila] = clock();
     }
 
-    tiempo_actual = clock(); //Guardo el tiempo actual para hacer luego la resta y fijarme el tiempo transcurrido
-    tiempo_transcurrido = ((double)(tiempo_actual-flags[nivel]))/CLOCKS_PER_SEC;
-    if (tiempo_transcurrido < (1/(nivel*vel))){//Me fijo si transcurrió un tiempo determinado
-        return 0; //Si no transcurrio el tiempo, devuelvo 0
+    tiempo_transcurrido = ((double)(clock() - flags[fila])) / CLOCKS_PER_SEC;
+
+    // Verifica si ha pasado el tiempo necesario
+    if (tiempo_transcurrido >= 1.0 / (nivel * vel)) {
+        flags[fila] = clock();  // Reinicia el temporizador
+        return 1;  // Ha pasado el tiempo, devuelve 1
     }
-    
-    flags[nivel] = clock(); //Seteo un nuevo valor inicial
-    return 1; // Si transcurrio el tiempo, devuelvo 1
+
+    return 0;  // No ha pasado el tiempo, devuelve 0
 }

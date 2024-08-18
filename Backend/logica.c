@@ -1,15 +1,17 @@
 /* INCLUDES */
+#include <stdint.h>
 #include <stdio.h>  // Incluyo la librería estándar stdio HOLA RAMA
 #include <unistd.h> // Para la función sleep 
 #include <stdio.h>  // Incluyo la librería estándar stdio
 #include <unistd.h> // Para la función sleep
 #include "logica.h"
+#include "../Frontend_Allegro/allegro.h" // Incluyo el archivo de cabecera de Allegro
 
 // Macros para definir hasta que columna se shiftea antes de reiniciarse //
 #define START_PRINT 2  
 #define STOP_PRINT 37
 
-int matriz[FILAS][COLUMNAS] = {
+uint32_t matriz[FILAS][COLUMNAS] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
     {0, 0, 0, 2, 2, 0, 2, 2, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -26,6 +28,13 @@ int matriz[FILAS][COLUMNAS] = {
    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
+void iniciar_logica(void){
+  init_allegro(matriz);
+}
+
+void actualizar_pantalla(void){
+  inicio_partida(matriz);
+}
 void imprimir_matriz(int filas, int columnas, int fila_index) {
     if (fila_index == -1) { // Imprimir toda la matriz
         for (int i = 0; i < filas; i++) {
@@ -72,6 +81,7 @@ void shift_row(int row, int direction)
       matriz[row][STOP_PRINT] = row;
     }
   }
+  actualizar_pantalla();
 }
 
 // Funcion para actualizar matriz de mapa desplazando vehiculos

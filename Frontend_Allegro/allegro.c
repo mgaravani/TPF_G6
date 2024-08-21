@@ -1,6 +1,6 @@
 #include "allegro.h" //Incluyo el Header allegro
+#include <allegro5/allegro_image.h> // Necesario para cargar imágenes
 #include <stdio.h>
-
 /*FUNCION init allegro*/
 //Encargada de realizar todas las inicializaciones necesarias para el funcionamento
 AllegroResources init_allegro(uint32_t matriz[FILAS][COLUMNAS]) 
@@ -14,7 +14,11 @@ AllegroResources init_allegro(uint32_t matriz[FILAS][COLUMNAS])
         printf("Error al inicializar Allegro!\n");
         exit(EXIT_FAILURE); //Ante un fallo termina el programa y borra los recursos
     }
-
+    /*INICIALIZACION DE ALLEGRO IMAGE PARA FONDO*/
+    if (!al_init_image_addon()) {
+        printf("Error al inicializar Allegro image!\n");
+        exit(EXIT_FAILURE); //Ante un fallo termina el programa y borra los recursos
+    }
     /*INICIALIZACION DE SISTEMA DE ENTRADA DE TECLADO*/
     if (!al_install_keyboard()) {
         printf("No se pudo instalar el teclado.\n");
@@ -71,6 +75,9 @@ AllegroResources init_allegro(uint32_t matriz[FILAS][COLUMNAS])
     resources.fuentes[7] = al_load_font("resources/Smasher 312 Custom.ttf", 200, ALLEGRO_ALIGN_CENTER); // Fuente 8
     resources.fuentes[8] = al_load_font("resources/The Amazing Spider-Man.ttf", 200, ALLEGRO_ALIGN_CENTER); // Fuente 9
     resources.fuentes[9] = al_load_font("resources/The Last Comic On Earth.ttf", 200, ALLEGRO_ALIGN_CENTER); // Fuente 10
+    
+    
+    
 
     /*ANALIZA SI LAS FUENTES SE CARGARON CORRECTAMENTE*/
     for (int i = 0; i < 10; i++) 
@@ -107,7 +114,6 @@ while (!done) {
     // 'menu_allegro' se llama en cada iteración del bucle para redibujar el menú
     // en función del estado actual. Dependiendo de la selección del usuario, el menú
     // se actualizará visualmente, mostrando el rectángulo alrededor de la opción seleccionada.
-   // menu_allegro(resources);
 }
 
 
@@ -154,21 +160,43 @@ void menu_allegro(AllegroResources resources)
 //TESTEO POR EL MOMENTO
 void inicio_partida( uint32_t matriz[FILAS][COLUMNAS])
 {   
-    // Limpia la pantalla con el color negro
-    al_clear_to_color(al_map_rgb(0, 0, 0));
+    
+  // Cargar la imagen
+ALLEGRO_BITMAP *fondo = al_load_bitmap("resources/Fondo.png");
 
-    uint32_t cell_width = 1920 / COLUMNAS; //Defino el ancho de las celdas de la matriz
-    uint32_t cell_height = 1080 / FILAS; //Defino el alto de las celdas de la matriz
+ALLEGRO_BITMAP *vehiculo = al_load_bitmap("resources/Auto.png");
+ALLEGRO_BITMAP *camion = al_load_bitmap("resources/Camion.png");
+
+// Obtener el ancho y alto originales de la imagen
+float original_width = al_get_bitmap_width(fondo);
+float original_height = al_get_bitmap_height(fondo);
+
+// Establecer los nuevos anchos y altos escalados según las celdas de la matriz
+uint32_t cell_width = 1920 / COLUMNAS; // Defino el ancho de las celdas de la matriz
+uint32_t cell_height = 1080 / FILAS;   // Defino el alto de las celdas de la matriz
+
+// Dibujar la imagen escalada a las dimensiones de la celda
+al_draw_scaled_bitmap(fondo,
+    0, 0,                    // Origen en la imagen (x, y)
+    original_width, original_height,  // Ancho y alto de la porción original
+    0, 0,                    // Posición de destino (x, y)
+    cell_width*COLUMNAS, cell_height*FILAS,          // Ancho y alto escalados a las dimensiones de la celda
+    0                        // Flags (0 si no hay)
+);
 
      // Bucle para recorrer celda a celda
     for (uint32_t i = 0; i < FILAS; i++) {
         for (uint32_t j = 0; j < COLUMNAS; j++) {
-            if (matriz[i][j] != 0) { //Si hay un 1
-                // Dibuja un círculo en la posición correcta
-                int x = j * cell_width + cell_width / 2; //Defino la coordenada x del centro
-                int y = i * cell_height + cell_height / 2; //Defino la coordenada y del centro
-                int radius = (cell_width < cell_height ? cell_width : cell_height) / 3; //Defino el radio 
-                al_draw_filled_circle(x, y, radius, al_map_rgb(255, 255, 255)); //Dibujo el circulo
+            // Dibuja un círculo en la posición correcta
+            int x = j * cell_width + cell_width / 2; //Defino la coordenada x del centro
+            int y = i * cell_height + cell_height / 2; //Defino la coordenada y del centro
+            if (matriz[i][j] != 0 && matriz[i][j] != 8 ) { //Si hay un 1
+                al_draw_bitmap(vehiculo, x, y-25, 0);
+            }
+            else if (matriz[i][j] == 8) {
+            {
+                al_draw_bitmap(camion, x, y-25, 0);
+            }
             }
         }
     }

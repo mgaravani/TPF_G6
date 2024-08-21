@@ -6,9 +6,6 @@
 int main(void) {
   iniciar_logica();
  while (1) {
-   if (tiempoespera(12, 1)) {
-     shift_row(1, 0);
-   }
    if (tiempoespera(12, 2)) {
      shift_row(2, 0);
    }
@@ -24,9 +21,7 @@ int main(void) {
    if (tiempoespera(9, 6)) {
      shift_row(6, 0);
    }
-   if (tiempoespera(6, 7)) {
-     shift_row(7, 1);
-   }
+
    if (tiempoespera(6, 8)) {
      shift_row(8, 0);
    }
@@ -41,9 +36,6 @@ int main(void) {
    }
    if (tiempoespera(2, 12)) {
      shift_row(12, 0);
-   }
-   if (tiempoespera(1, 13)) {
-     shift_row(13, 1);
    }
  }
     return 0;

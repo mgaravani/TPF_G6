@@ -1,6 +1,7 @@
 #include "allegro.h" //Incluyo el Header allegro
 #include <allegro5/allegro_image.h> // Necesario para cargar imágenes
 #include <stdio.h>
+#include <unistd.h>
 /*FUNCION init allegro*/
 //Encargada de realizar todas las inicializaciones necesarias para el funcionamento
 AllegroResources init_allegro(uint32_t matriz[FILAS][COLUMNAS]) 
@@ -164,8 +165,17 @@ void inicio_partida( uint32_t matriz[FILAS][COLUMNAS])
   // Cargar la imagen
 ALLEGRO_BITMAP *fondo = al_load_bitmap("resources/Fondo.png");
 
-ALLEGRO_BITMAP *vehiculo = al_load_bitmap("resources/Auto.png");
-ALLEGRO_BITMAP *camion = al_load_bitmap("resources/Camion.png");
+ALLEGRO_BITMAP *tronco = al_load_bitmap("resources/Tronco.png");
+ALLEGRO_BITMAP *auto_D = al_load_bitmap("resources/Auto_D.png");
+ALLEGRO_BITMAP *auto_I= al_load_bitmap("resources/Auto_I.png");
+ALLEGRO_BITMAP *auto2_D = al_load_bitmap("resources/Auto2_D.png");
+ALLEGRO_BITMAP *auto2_I= al_load_bitmap("resources/Auto2_I.png");
+ALLEGRO_BITMAP *auto3_D = al_load_bitmap("resources/Auto3_D.png");
+ALLEGRO_BITMAP *auto3_I= al_load_bitmap("resources/Auto3_I.png");
+ALLEGRO_BITMAP *camion_D = al_load_bitmap("resources/Camion_D.png");
+ALLEGRO_BITMAP *camion_I = al_load_bitmap("resources/Camion_I.png");
+ALLEGRO_BITMAP *tortuga_D = al_load_bitmap("resources/Tortuga_D.png");
+ALLEGRO_BITMAP *tortuga_I = al_load_bitmap("resources/Tortuga_I.png");
 
 // Obtener el ancho y alto originales de la imagen
 float original_width = al_get_bitmap_width(fondo);
@@ -190,19 +200,52 @@ al_draw_scaled_bitmap(fondo,
             // Dibuja un círculo en la posición correcta
             int x = j * cell_width + cell_width / 2; //Defino la coordenada x del centro
             int y = i * cell_height + cell_height / 2; //Defino la coordenada y del centro
-            if (matriz[i][j] != 0 && matriz[i][j] != 8 ) { //Si hay un 1
-                al_draw_bitmap(vehiculo, x, y-25, 0);
-            }
-            else if (matriz[i][j] == 8) {
-            {
-                al_draw_bitmap(camion, x, y-25, 0);
-            }
-            }
-        }
-    }
 
-    al_flip_display();
-}
+            if (matriz[i][j] == 2) 
+            {
+                al_draw_bitmap(tronco, x, y-25, 0);
+            }
+             if (matriz[i][j] == 3) 
+              {
+                al_draw_bitmap(tronco, x, y - 25, 0);
+              }
+               if (matriz[i][j] == 4) 
+                {
+                  al_draw_bitmap(tronco, x, y - 25, 0);
+                }
+                 if (matriz[i][j] == 5) 
+                  {
+                    al_draw_bitmap(tortuga_D, x, y - 25, 0);
+                  }
+                   if (matriz[i][j] == 6) 
+                    {
+                      al_draw_bitmap(tortuga_I, x, y - 38, 0);
+                    }
+                     if (matriz[i][j] == 8) 
+                    {
+                      al_draw_bitmap(camion_D, x, y - 25, 0);
+                    }
+                     if (matriz[i][j] == 9) 
+                    {
+                      al_draw_bitmap(auto3_I, x, y - 25, 0);
+                    }
+                     if (matriz[i][j] == 10) 
+                    {
+                      al_draw_bitmap(auto2_D, x, y - 25, 0);
+                    }
+                     if (matriz[i][j] == 11) 
+                    {
+                      al_draw_bitmap(auto_D, x, y - 25, 0);
+                    }
+                        if (matriz[i][j] == 12) 
+                    {
+                      al_draw_bitmap(auto3_D, x, y - 38, 0);
+                    }
+                  }
+                }
+
+              al_flip_display();
+            }
 
 /*FUNCION cleanup_allegro*/
 //Borra todos los recursos utilizados
@@ -219,4 +262,67 @@ void cleanup_allegro(AllegroResources resources)
     {
         al_destroy_display(resources.pantalla);
     }
+}
+
+
+void prueba_impresion(AllegroResources init)
+{   
+    static clock_t flags[10] = {0};  // Inicializa el arreglo a 0
+    static int x = 0, y = 200, z = 600, c = 0;  // Inicializa fuera de la pantalla a la derecha
+
+    ALLEGRO_BITMAP *fondo = al_load_bitmap("resources/Fondo.png");
+    ALLEGRO_BITMAP *tronco = al_load_bitmap("resources/Tronco.png");
+    ALLEGRO_BITMAP *camion_D = al_load_bitmap("resources/Camion_D.png");
+    ALLEGRO_BITMAP *tortuga_D = al_load_bitmap("resources/Tortuga_D.png");
+
+    // Dibuja el fondo
+    al_draw_scaled_bitmap(fondo,
+        0, 0,  // Origen en la imagen (x, y)
+        al_get_bitmap_width(fondo), al_get_bitmap_height(fondo),  // Ancho y alto originales
+        0, 0,  // Posición de destino (x, y)
+        init.width, init.height,  // Escalar a las dimensiones de la pantalla
+        0  // Flags (0 si no hay)
+    );
+
+    // Verifica si ha pasado el tiempo necesario para mover tronco
+    if (((double)(clock() - flags[0])) / CLOCKS_PER_SEC >= 0.001) {
+        flags[0] = clock();  // Reinicia el temporizador
+        x += 2;
+    }
+
+    // Verifica si ha pasado el tiempo necesario para mover camion_D
+    if (((double)(clock() - flags[1])) / CLOCKS_PER_SEC >= 0.001) {
+        flags[1] = clock();  // Reinicia el temporizador
+        y += 4;
+    }
+    if (((double)(clock() - flags[2])) / CLOCKS_PER_SEC >= 0.001) {
+        flags[2] = clock();  // Reinicia el temporizador
+        z += 4;
+    }
+    if (((double)(clock() - flags[3])) / CLOCKS_PER_SEC >= 0.001) {
+        flags[3] = clock();  // Reinicia el temporizador
+        c += 6;
+    }
+
+    // Ajusta la posición de tronco y camion_D para reaparecer desde el principio
+    if (x > init.width+150) {
+        x = 0;  // Reaparece justo fuera de la pantalla por la izquierda
+    }
+    if (y > init.width+150) {  
+        y = 0;  // Reaparece justo fuera de la pantalla por la izquierda
+    }
+    if (z > init.width+150) {  
+        z = 0; // Reaparece justo fuera de la pantalla por la izquierda
+    }
+    if (c > init.width+150) {  
+        c = 0; // Reaparece justo fuera de la pantalla por la izquierda
+    }
+
+    // Dibuja las imágenes en sus nuevas posiciones
+    al_draw_bitmap(tronco, x-150, 300, 0);
+    al_draw_bitmap(camion_D, y-150, 800, 0);
+    al_draw_bitmap(camion_D, z-150, 800, 0);
+    al_draw_bitmap(tortuga_D, c-150, 150, 0);
+    
+    al_flip_display();
 }

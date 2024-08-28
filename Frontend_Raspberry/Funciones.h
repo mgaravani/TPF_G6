@@ -6,8 +6,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
-#include "disdrv.h"//librerias de control del display
-#include "joydrv.h"
+#include "./Ejemplos/disdrv.h" //librerias de control del display
+#include "./Ejemplos/joydrv.h" //librerias de control del display
 #define DISP_CANT_X_DOTS 16
 #define DISP_CANT_Y_DOTS 16
 #define SAPO_SIZE 3

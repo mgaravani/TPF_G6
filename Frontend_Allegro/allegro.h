@@ -63,7 +63,9 @@ ALLEGRO_EVENT_QUEUE *init_events(ALLEGRO_DISPLAY *pantalla);
 //Utilizada para el manejo de los eventos
 void manejo_eventos(AllegroResources *resources, ALLEGRO_EVENT_QUEUE * event_queue);
 
-
+/*     PRUEBA DE MOVIMIENTO CONTINUO      */
 void prueba_impresion( AllegroResources);
+/*     PRUEBA DE MOVIMIENTO CONTINUO      */
+
 
 #endif /* ALLEGRO_H */

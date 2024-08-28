@@ -269,7 +269,8 @@ void prueba_impresion(AllegroResources init)
 {   
     static clock_t flags[10] = {0};  // Inicializa el arreglo a 0
     static int x = 0, y = 200, z = 600, c = 0;  // Inicializa fuera de la pantalla a la derecha
-
+    int fila = init.height/14;
+    printf("CADA FILA ES DE : %d", fila);
     ALLEGRO_BITMAP *fondo = al_load_bitmap("resources/Fondo.png");
     ALLEGRO_BITMAP *tronco = al_load_bitmap("resources/Tronco.png");
     ALLEGRO_BITMAP *camion_D = al_load_bitmap("resources/Camion_D.png");

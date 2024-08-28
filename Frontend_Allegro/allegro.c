@@ -270,6 +270,7 @@ void prueba_impresion(AllegroResources init)
     static clock_t flags[10] = {0};  // Inicializa el arreglo a 0
     static int x = 0, y = 200, z = 600, c = 0;  // Inicializa fuera de la pantalla a la derecha
     int fila = init.height/14;
+
     printf("CADA FILA ES DE : %d", fila);
     ALLEGRO_BITMAP *fondo = al_load_bitmap("resources/Fondo.png");
     ALLEGRO_BITMAP *tronco = al_load_bitmap("resources/Tronco.png");
@@ -320,10 +321,10 @@ void prueba_impresion(AllegroResources init)
     }
 
     // Dibuja las imágenes en sus nuevas posiciones
-    al_draw_bitmap(tronco, x-150, 300, 0);
-    al_draw_bitmap(camion_D, y-150, 800, 0);
-    al_draw_bitmap(camion_D, z-150, 800, 0);
-    al_draw_bitmap(tortuga_D, c-150, 150, 0);
+    al_draw_bitmap(tronco, x-150, fila*8, 0);
+    al_draw_bitmap(camion_D, y-150, fila*6, 0);
+    al_draw_bitmap(camion_D, z-150, fila*6, 0);
+    al_draw_bitmap(tortuga_D, c-150, fila*3, 0);
     
     al_flip_display();
 }
